@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ListView?>
 
-
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fay.betacat.dev.qqmusic.Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+          >
    <children>
-      <TabPane prefHeight="500.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="300.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="音乐" />
-          <Tab text="下载列表" />
-           <Tab text="设置" />
+            <Tab text="音乐" >
+                <content>
+                    <!--<ListView fx:id="listView" />-->
+                    <fx:include source="musiclist.fxml"/>
+                </content>
+            </Tab>
+            <Tab text="下载列表" />
+            <Tab text="设置">
+               <content>
+                  <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" text="保存" />
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>

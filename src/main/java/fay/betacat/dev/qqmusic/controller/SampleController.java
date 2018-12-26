@@ -1,10 +1,10 @@
-package fay.betacat.dev.qqmusic;
+package fay.betacat.dev.qqmusic.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class Controller {
+public class SampleController {
 
     @FXML
     public void handlerBtnClick(ActionEvent event) {
@@ -13,4 +13,9 @@ public class Controller {
     }
 
 
+    @FXML
+    public void search(ActionEvent event) {
+        Button btnSource = (Button) event.getSource();
+        btnSource.setText("I am clicked!");
+    }
 }

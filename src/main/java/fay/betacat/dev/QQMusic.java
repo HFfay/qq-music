@@ -10,9 +10,9 @@ public class QQMusic extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("qqmusic.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("musiclist.fxml"));
 
-        Scene scene = new Scene(root, 500, 300);
+        Scene scene = new Scene(root, 650, 400);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("qqmusic.css").toExternalForm());
 
         primaryStage.setTitle("QQ Music Download");

@@ -31,9 +31,24 @@ public class Song {
     /**
      * 歌曲品质(128、320、aac、ape、flac)
      */
-    List type;
+    List<String> type;
 
 
-    Singer singer;
-    Album album;
+    /**
+     * 歌手名
+     */
+    String singerName;
+
+
+    String albummid;
+
+    /**
+     * 专辑名称
+     */
+    String albumName;
+
+    /**
+     * 专辑图片
+     */
+    String pic;
 }
