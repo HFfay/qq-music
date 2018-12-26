@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 
-
+<?import fay.betacat.dev.qqmusic.dto.Song?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
 <GridPane alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="fay.betacat.dev.qqmusic.Controller">
-   <children>
-      <Button mnemonicParsing="false" text="Button" />
-   </children>
+   <padding>
+      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+   </padding>
+   <HBox alignment="TOP_LEFT" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+      <TextField fx:id="nameQ" prefWidth="250.0" promptText="name" />
+      <Button onAction="#search" text="search" />
+   </HBox>
+   <TableView fx:id="tableView" GridPane.columnIndex="0" GridPane.rowIndex="2">
+      <columns>
+         <TableColumn prefWidth="200.0" text="歌曲名" fx:id="firstNameColumn">
+            <cellValueFactory>
+               <PropertyValueFactory property="name" />
+            </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="100.0" text="no.">
+            <cellValueFactory>
+               <PropertyValueFactory property="index" />
+            </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="200.0" text="歌手">
+            <cellValueFactory>
+               <PropertyValueFactory property="singer.name" />
+            </cellValueFactory>
+         </TableColumn>
+      </columns>
+      <items>
+         <FXCollections fx:factory="observableArrayList">
+            <Song name="天黑黑" index="1" />
+         </FXCollections>
+      </items>
+      <sortOrder>
+         <fx:reference source="firstNameColumn" />
+      </sortOrder>
+   </TableView>
 </GridPane>
