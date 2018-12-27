@@ -21,7 +21,7 @@ public class Song {
     /**
      * 专辑中的曲目
      */
-    String index;
+    int index;
 
     /**
      * 发行时间
@@ -31,7 +31,11 @@ public class Song {
     /**
      * 歌曲品质(128、320、aac、ape、flac)
      */
-    List<String> type;
+    String type_128;
+    String type_320;
+    String type_aac;
+    String type_ape;
+    String type_flac;
 
 
     /**
