@@ -7,6 +7,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import fay.betacat.dev.qqmusic.dto.Song;
 import fay.betacat.dev.qqmusic.utils.QQMusicUtils;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -154,7 +155,7 @@ public class MusicListController implements Initializable {
             String singername = "";
             for(Map singer : singers){
                 String t = MapUtils.getString(singer, "name", "");
-                singername = singername.equals("") ? "" : "," + t;
+                singername += singername.equals("") ? t : "," + t;
             }
             int index = MapUtils.getIntValue(s, "index_album", 0);
             String albummid = MapUtils.getString(((Map)s.get("album")), "mid", "");
@@ -183,9 +184,14 @@ public class MusicListController implements Initializable {
             res.add(song);
         }
 
-        tableView.setItems(FXCollections.observableArrayList(res));
-        page.setPageCount((totalnum / curnum) + 1);
-
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                tableView.setItems(FXCollections.observableArrayList(res));
+                int pagecount = totalnum == 0 ? 1 : (totalnum / curnum) + (totalnum % curnum == 0 ? 0 : 1);
+                page.setPageCount(pagecount);
+            }
+        });
     }
 
 }
