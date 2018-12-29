@@ -6,6 +6,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import fay.betacat.dev.qqmusic.dto.Song;
+import fay.betacat.dev.qqmusic.utils.DownloadUtils;
 import fay.betacat.dev.qqmusic.utils.QQMusicUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -28,12 +29,13 @@ import java.util.*;
 
 public class MusicListController implements Initializable {
 
+    final String vkey = "A2BD417485219FA8339DA04A0F169E0761DAE657A01E72D079E2CEE018214692F0BE34D9BEFCB4DF71928769F809095A2D671015182F56D2";
+    final String guid = "5931742855";
+
     @FXML
     private TextField name;
-
     @FXML
     private TableView<Song> tableView;
-
     @FXML
     private Pagination page;
 
@@ -51,6 +53,25 @@ public class MusicListController implements Initializable {
 //            }
 //
 //        });
+        long t = System.currentTimeMillis();
+        long guid = Math.round(2147483647 * Math.random()) * t % 10000000000L;
+        System.out.println("guid = " + guid);
+
+        Song song = new Song();
+        song.setMid("000drj9r0TOUGx");
+        song.setName("超快感");
+        song.setIndex(1);
+        song.setPublicTime("2000-06-08");
+        song.setSingerName("孙燕姿");
+        song.setAlbummid("002UZ9ob4Ecg0S");
+        song.setAlbumName("孙燕姿 同名专辑");
+        song.setType_128("3531963");
+        song.setType_320("8829595");
+        song.setType_aac("5416054");
+        song.setType_ape("27488184");
+        song.setType_flac("27858174");
+
+        downloadMusic("320", song);
     }
 
 
@@ -59,24 +80,9 @@ public class MusicListController implements Initializable {
 
         String text = name.getText();
         if (text != null && !text.trim().equalsIgnoreCase("")){
-//            tableView.setItems(null);
 
             int pageindex = page.getCurrentPageIndex();
             int pagesize = 20;
-            int sum = 35;
-
-//            List<Song> list = new LinkedList<>();
-//            for(int i = 1 + pageindex*pagesize; i <= (pageindex+1)*pagesize && i<=sum; i++){
-//                Song song = new Song();
-//                song.setName(text + "_No." + i);
-//                song.setIndex("1");
-//                list.add(song);
-//            }
-
-//            ObservableList<Song> data = FXCollections.observableArrayList(list);
-//            tableView.setItems(data);
-//            page.setPageCount((sum / pagesize) + 1);
-//            page.setMaxPageIndicatorCount((sum / pagesize) + 1);
 
             searchMusic(text, pagesize, pageindex);
         }
@@ -135,6 +141,15 @@ public class MusicListController implements Initializable {
     }
 
 
+    public void downloadMusic(String type, Song... songs){
+
+        for(Song song : songs){
+            String url = prepareDownUrl(type, song.getMid());
+            DownloadUtils.download(url, song);
+        }
+
+    }
+
 
     private void dealSongs(String str){
         List<Song> res = new LinkedList<>();
@@ -192,6 +207,34 @@ public class MusicListController implements Initializable {
                 page.setPageCount(pagecount);
             }
         });
+    }
+
+    private String prepareDownUrl(String fileType, String mid) {
+        String url = "";
+
+        switch (fileType) {
+            case "flac": {
+                url = "http://dl.stream.qqmusic.qq.com/F000" + mid + ".flac?vkey=" + vkey + "&guid=" + guid + "&uin=3051522991&fromtag=64";
+            }
+            break;
+            case "ape": {
+                url = "http://dl.stream.qqmusic.qq.com/A000" + mid + ".ape?vkey=" + vkey + "&guid=" + guid + "&uin=3051522991&fromtag=64";
+            }
+            break;
+            case "aac": {
+                url = "http://dl.stream.qqmusic.qq.com/C600" + mid + ".m4a?vkey=" + vkey + "&guid=" + guid + "&uin=3051522991&fromtag=64";
+            }
+            break;
+            case "320": {
+                url = "http://dl.stream.qqmusic.qq.com/M800" + mid + ".mp3?vkey=" + vkey + "&guid=" + guid + "&uin=3051522991&fromtag=64";
+            }
+            break;
+            case "128": {
+                url = "http://dl.stream.qqmusic.qq.com/M500" + mid + ".mp3?vkey=" + vkey + "&guid=" + guid + "&uin=3051522991&fromtag=64";
+            }
+            break;
+        }
+        return url;
     }
 
 }
