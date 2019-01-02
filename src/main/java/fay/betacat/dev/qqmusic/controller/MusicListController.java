@@ -15,9 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.apache.commons.collections.MapUtils;
 
 import java.io.IOException;
@@ -32,46 +30,77 @@ public class MusicListController implements Initializable {
     final String vkey = "A2BD417485219FA8339DA04A0F169E0761DAE657A01E72D079E2CEE018214692F0BE34D9BEFCB4DF71928769F809095A2D671015182F56D2";
     final String guid = "5931742855";
 
+    private static final int PAGE_SIZE = 20;
+
     @FXML
     private TextField name;
     @FXML
     private TableView<Song> tableView;
     @FXML
     private Pagination page;
+    @FXML
+    private TableColumn<Song, String> idCol;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-//        page.setPageFactory(new Callback<Integer, Node>() {
-//            @Override
-//            public Node call(Integer param) {
-//
-//                search(null);
-//
-//                return null;
-//            }
-//
-//        });
+
+        idCol.setCellFactory((col) -> {
+            TableCell<Song, String> cell = new TableCell<Song, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    this.setText(null);
+                    this.setGraphic(null);
+
+                    if (!empty) {
+                        int pageindex = page.getCurrentPageIndex();
+                        int rowIndex = this.getIndex() + 1 + (pageindex * PAGE_SIZE);
+                        this.setText(String.valueOf(rowIndex));
+
+                        CheckBox checkBox = new CheckBox();
+                        Song song = this.getTableView().getItems().get(this.getIndex());
+                        checkBox.setSelected(song.getSelected().get());
+                        checkBox.selectedProperty().bindBidirectional(song.getSelected());
+                        this.setGraphic(checkBox);
+                        checkBox.selectedProperty().addListener((obVal, oldVal, newVal) -> {
+                            if (newVal) {
+                                // 添加选中时执行的代码
+                                // 获取当前单元格的对象
+                                Song t = this.getTableView().getItems().get(this.getIndex());
+                                // this.getItem();
+                                System.out.println("第" + this.getIndex() + "行被选中！: " + t.toString());
+                            }
+
+                        });
+                    }
+                }
+            };
+            return cell;
+        });
+
+
+
         long t = System.currentTimeMillis();
         long guid = Math.round(2147483647 * Math.random()) * t % 10000000000L;
         System.out.println("guid = " + guid);
 
-        Song song = new Song();
-        song.setMid("000drj9r0TOUGx");
-        song.setName("超快感");
-        song.setIndex(1);
-        song.setPublicTime("2000-06-08");
-        song.setSingerName("孙燕姿");
-        song.setAlbummid("002UZ9ob4Ecg0S");
-        song.setAlbumName("孙燕姿 同名专辑");
-        song.setType_128("3531963");
-        song.setType_320("8829595");
-        song.setType_aac("5416054");
-        song.setType_ape("27488184");
-        song.setType_flac("27858174");
-
-        downloadMusic("320", song);
+//        Song song = new Song();
+//        song.setMid("000drj9r0TOUGx");
+//        song.setName("超快感");
+//        song.setIndex(1);
+//        song.setPublicTime("2000-06-08");
+//        song.setSingerName("孙燕姿");
+//        song.setAlbummid("002UZ9ob4Ecg0S");
+//        song.setAlbumName("孙燕姿 同名专辑");
+//        song.setType_128("3531963");
+//        song.setType_320("8829595");
+//        song.setType_aac("5416054");
+//        song.setType_ape("27488184");
+//        song.setType_flac("27858174");
+//
+//        downloadMusic("320", song);
     }
 
 
@@ -82,9 +111,8 @@ public class MusicListController implements Initializable {
         if (text != null && !text.trim().equalsIgnoreCase("")){
 
             int pageindex = page.getCurrentPageIndex();
-            int pagesize = 20;
 
-            searchMusic(text, pagesize, pageindex);
+            searchMusic(text, PAGE_SIZE, pageindex);
         }
 
     }
@@ -107,7 +135,7 @@ public class MusicListController implements Initializable {
         }
 
         String url = "http://c.y.qq.com/soso/fcgi-bin/client_search_cp?new_json=1&cr=1&format=json&inCharset=utf8&outCharset=utf-8" +
-                "&p=" + pageindex +
+                "&p=" + (pageindex + 1) +
                 "&n=" + pagesize +
                 "&w=" + name;
 

@@ -1,5 +1,7 @@
 package fay.betacat.dev.qqmusic.dto;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -55,4 +57,17 @@ public class Song {
      * 专辑图片
      */
     String pic;
+
+
+    BooleanProperty selected = new SimpleBooleanProperty(false);
+
+
+    public BooleanProperty getSelected(){
+        return selected;
+    }
+
+    public void setSelected(boolean selected){
+        this.selected = new SimpleBooleanProperty(selected);
+    }
+
 }

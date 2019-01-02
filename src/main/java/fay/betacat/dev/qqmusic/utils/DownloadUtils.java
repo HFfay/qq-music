@@ -11,6 +11,8 @@ import java.net.URL;
 
 public class DownloadUtils {
 
+    public static final String DOWNLOAD_PATH = "/Users/betacat/DEV/TEMP";
+
 
     public static void download(String link, Song song){
         try {
@@ -33,10 +35,9 @@ public class DownloadUtils {
             byte[] musicData = bos.toByteArray();
 
             //文件保存位置
-            String savePath = "C:\\Users\\萌幻妖姬\\Documents\\GitHub";
-            File saveDir = new File(savePath);
+            File saveDir = new File(DOWNLOAD_PATH);
             if (!saveDir.exists()) {
-                saveDir.mkdir();
+                saveDir.mkdirs();
             }
             File file = new File(saveDir + File.separator + song.getName() + ".mp3");
             FileOutputStream fos = new FileOutputStream(file);
@@ -51,7 +52,7 @@ public class DownloadUtils {
             e.printStackTrace();
         }
 
-        System.out.println("info:" + link + " download success");
+        System.out.println("info:" + link + " , download success");
 
     }
 
